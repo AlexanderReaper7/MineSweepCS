@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace MineSweepCS
 {
@@ -8,6 +9,8 @@ namespace MineSweepCS
     /// </summary>
     public static class Program
     {
+        public static long nesting = 0;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -19,8 +22,11 @@ namespace MineSweepCS
                 Console.WriteLine($"arg: {arg}");
             }
 
-            int cols = int.Parse(args[1]), rows = int.Parse(args[2]);
-            double concentration = double.Parse(args[3]);
+            int cols = int.Parse(args[0]), rows = int.Parse(args[1]);
+            var styles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands |
+                     NumberStyles.AllowExponent;
+            var provider = CultureInfo.CreateSpecificCulture("en-GB");
+            double concentration = double.Parse(args[2], styles, provider);
             using (var game = new MineSweeper(cols, rows, concentration)) game.Run();
         }
     }
